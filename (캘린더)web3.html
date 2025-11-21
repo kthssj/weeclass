@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>상담 날짜</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      height: 100dvh;
+      min-height: 100%;
+      margin: 0 auto;
+      background-color: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+    }
+
+    .content {
+      padding: 10px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .calendar-header button {
+      background-color: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .calendar-title {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .calendar {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+
+    .calendar th, .calendar td {
+      width: 14.28%;
+      height: 60px;
+      text-align: center;
+      padding: 6px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .calendar th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+
+    .today {
+      background-color: #9c9c9c;
+      font-weight: bold;
+      border: 2px solid #000000;
+    }
+
+    .selected {
+      background-color: #35cde7;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="header">
+      <span>←</span>
+      <span>상담 날짜</span>
+      <span>≡</span>
+    </div>
+
+    <div class="content">
+      <div class="calendar-header">
+        <button onclick="changeMonth(-1)">←</button>
+        <span id="calendar-title" class="calendar-title"></span>
+        <button onclick="changeMonth(1)">→</button>
+      </div>
+
+      <table class="calendar" id="calendar">
+        <!-- 달력 표 자동 생성 -->
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const calendarTitle = document.getElementById('calendar-title');
+      const calendar = document.getElementById('calendar');
+      let selectedTd = null;
+      let currentDate = new Date();
+
+      function renderCalendar(year, month) {
+        calendar.innerHTML = '';
+        const today = new Date();
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        calendarTitle.textContent = `${year}년 ${month + 1}월`;
+
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        const thead = document.createElement('thead');
+        const headRow = document.createElement('tr');
+        days.forEach(d => {
+          const th = document.createElement('th');
+          th.textContent = d;
+          headRow.appendChild(th);
+        });
+        thead.appendChild(headRow);
+        calendar.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+          const row = document.createElement('tr');
+          for (let j = 0; j < 7; j++) {
+            const cell = document.createElement('td');
+            if (i === 0 && j < firstDay) {
+              cell.textContent = '';
+            } else if (date > lastDate) {
+              cell.textContent = '';
+            } else {
+              cell.textContent = date;
+              const cellDate = new Date(year, month, date);
+              if (
+                cellDate.getFullYear() === today.getFullYear() &&
+                cellDate.getMonth() === today.getMonth() &&
+                cellDate.getDate() === today.getDate()
+              ) {
+                cell.classList.add('today');
+              }
+
+              cell.addEventListener('click', () => {
+                if (selectedTd) selectedTd.classList.remove('selected');
+                cell.classList.add('selected');
+                selectedTd = cell;
+              });
+
+              date++;
+            }
+            row.appendChild(cell);
+          }
+          tbody.appendChild(row);
+        }
+        calendar.appendChild(tbody);
+      }
+
+      function changeMonth(offset) {
+        currentDate.setMonth(currentDate.getMonth() + offset);
+        renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+      }
+
+      window.changeMonth = changeMonth;
+      renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    });
+  </script>
+</body>
+</html>

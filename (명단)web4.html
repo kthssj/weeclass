@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상담자 선택</title>
+    <style>
+        * {
+    height: auto;
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+        "header header"
+        "sidebar main-content";
+}
+
+header {
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #eee;
+    min-height: 50px;
+}
+
+header .header-left {
+    width: auto;
+    min-width: 30px;
+    display: flex;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 18px;
+    flex-grow: 1;
+    text-align: center;
+    line-height: 1;
+}
+
+header .header-right {
+    width: auto;
+    min-width: 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+header img {
+    max-height: 30px;
+    width: auto;
+    vertical-align: middle;
+}
+
+.sidebar {
+
+    grid-area: sidebar;
+    width: 80px;
+    background-color: #e9dfe0;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar span {
+    width: 100%;
+}
+
+.sidebar span ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.sidebar span li {
+    padding: 10px 0;
+    width: 100%;
+    cursor: pointer;
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.sidebar span li:last-child {
+    border-bottom: none;
+}
+
+
+.main-content {
+    grid-area: main-content;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+.box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    min-height: 50px;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar span li.active {
+    background-color: #d0c8c9;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#counselor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.box[type="submit"] {
+    font-family: inherit;
+    font-size: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-left">
+            <a href="(메인화면)web2.html"><img src="뒤로가기.png"></a>
+        </div>
+        <h1>상담자 선택</h1>
+        <a href="" class="header-right"><img src="앎아름.png">
+        </a>
+    </header>
+
+    <section class="sidebar">
+        <span id='side_menu'>
+            <ul>
+                <li> 1 학년 </li>
+                <li class="mid"> 2 학년 </li>
+                <li> 그 외 </li>
+            </ul>
+        </span>
+    </section>
+
+    <div class="main-content">
+        <form action="(상담신청화면)web.html" method="post" id="counselor-form">
+            <button type="submit" name="counselor" value="" class="box"></button>
+            <button type="submit" name="counselor" value="" class="box"></button>
+            <button type="submit" name="counselor" value="" class="box"></button>
+            <button type="submit" name="counselor" value="" class="box"></button>
+            <button type="submit" name="counselor" value="" class="box"></button>
+            <button type="submit" name="counselor" value="" class="box"></button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const grade1MenuItem = document.querySelector('#side_menu ul li:nth-child(1)');
+    const grade2MenuItem = document.querySelector('#side_menu ul li:nth-child(2)');
+    const otherMenuItem = document.querySelector('#side_menu ul li:nth-child(3)');
+    const menuItems = document.querySelectorAll('#side_menu ul li');
+    const contentButtons = document.querySelectorAll('#counselor-form .box');
+
+    const counselors = {
+        '1학년': [
+            { name: '김사랑', intro: '이름처럼 사랑으로 답하는 또래 상담사' },
+            { name: '박주은', intro: '재미있고 편안한 또래상담사' },
+            { name: '유지민', intro: '부담 없이 편하게 이야기 나누고 들을 수 있는 또래상담사' },
+            { name: '최하준', intro: '힘들때 옆을 지켜줄수있는 또래상담사' },
+            { name: '한승미', intro: '고민 잘들어주는 또래상담사' },
+            { name: '허수빈', intro: '옆에서 계속 기다려주는 또래상담사' }
+        ],
+        '2학년': [
+            { name: '김미옥', intro: '마음 따뜻하게 해주는 또래상담사' },
+            { name: '박유라', intro: '따뜻한 공감을 해줄 수 있는 또래상담사' },
+            { name: '백아인', intro: '비가 내리는 너의 마음에 조용히 씌워주는 우산같은 또래 상담사' },
+            { name: '안찬영', intro: '최선을 다해 상담에 임하는 또래 상담사' },
+            { name: '유호정', intro: '당신의 마음에 포근한 담요를 덮어주는 또래상담사' },
+            { name: '윤예진', intro: '당신의 이야기를 진심으로 듣는 또래상담사.' }
+        ],
+        '그 외': [
+            { name: '조가영 선생님', intro: '' },
+            { name: '맞춤 자동 선택', intro: '' }
+        ]
+    };
+
+    function updateBoxesContent(grade, selectedElement) {
+        menuItems.forEach(item => item.classList.remove('active'));
+        if (selectedElement) {
+            selectedElement.classList.add('active');
+        }
+
+        contentButtons.forEach(button => {
+            button.style.display = 'none';
+            button.innerHTML = '';
+            button.value = '';
+        });
+
+        const selectedCounselors = counselors[grade] || [];
+
+        selectedCounselors.forEach((counselor, index) => {
+            if (contentButtons[index]) {
+                const button = contentButtons[index];
+
+                button.value = counselor.name;
+                button.innerHTML = `
+                    <h3>${counselor.name}</h3>
+                    <p>${counselor.intro}</p>
+                `;
+
+                button.style.display = 'block';
+            }
+        });
+    }
+
+    if (grade1MenuItem) {
+        grade1MenuItem.addEventListener('click', (event) => updateBoxesContent('1학년', event.currentTarget));
+    }
+
+    if (grade2MenuItem) {
+        grade2MenuItem.addEventListener('click', (event) => updateBoxesContent('2학년', event.currentTarget));
+    }
+
+    if (otherMenuItem) {
+        otherMenuItem.addEventListener('click', (event) => updateBoxesContent('그 외', event.currentTarget));
+    }
+
+    updateBoxesContent('1학년', grade1MenuItem);
+});
+
+    </script>
+</body>
+
+</html>
